@@ -1,0 +1,46 @@
+desc:MIDI Linker.
+
+//Uses gmem[slider9] to link instances
+
+slider1:64<0,127,0.1>Linker 1
+slider2:1<0,1,1{Off,On}>link
+slider3:64<0,127,0.1>Linker 2
+slider4:1<0,1,1{Off,On}>link
+slider5:64<0,127,0.1>Linker 3
+slider6:1<0,1,1{Off,On}>link
+slider7:64<0,127,0.1>Linker 4
+slider8:1<0,1,1{Off,On}>link
+
+slider9:0<0,60,4>link address
+
+@init
+
+@slider
+slider2 ?
+	gmem[slider9] = slider1;
+	gmem[slider9+65] = slider2;
+slider4 ?
+	gmem[slider9+1] = slider3;
+	gmem[slider9+66] = slider4;
+slider6 ?
+	gmem[slider9+2] = slider5;
+	gmem[slider9+67] = slider6;
+slider8 ?
+	gmem[slider9+3] = slider7;
+	gmem[slider9+68] = slider8;
+
+@sample
+slider2 ?
+	gmem[slider9]!= slider1 ?
+		slider1 = gmem[slider9]; sliderchange(slider1);
+		slider2 = gmem[slider9+65]; sliderchange(slider2);
+slider4 ?
+	gmem[slider9+1]!= slider3 ?
+		slider3 = gmem[slider9+1]; sliderchange(slider3);
+		slider4 = gmem[slider9+66]; sliderchange(slider4);
+slider6 ?
+		slider5 = gmem[slider9+2]; sliderchange(slider5);
+		slider6 = gmem[slider9+67]; sliderchange(slider6);
+slider8 ?
+		slider7 = gmem[slider9+3]; sliderchange(slider7);
+		slider8 = gmem[slider9+68]; sliderchange(slider8);
